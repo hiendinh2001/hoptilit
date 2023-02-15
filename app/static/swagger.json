@@ -1,0 +1,601 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Mon site \"Bien-être & Santé au nature\" a pour but de vendre des produits pour la santé et le bien-être.\n\nSur mon site, en tant qu'utilisateur, vous pouvez :\n- Consulter tous les produits sur la page d'accueil. Ici, grâce à la pagination, 6 produits s'affichent par page. Vous pouvez cliquer sur les boutons de pagination pour voir les produits suivants. \n- Consulter les produits par catégorie en choisissant la catégorie sur le header.\n- Rechercher les produits en utilisant la barre de recherche sur le header.\n- S'inscrire en entrant votre nom et prénom, adresse e-mail, identifiant, mot de passe et une photo en cliquant sur \"Inscription\" dans le header.\n- Se connecter en entrant votre identifiant et mot de passe en cliquant sur \"Connexion\" dans le header.\n- Se déconnecter en cliquant sur \"Déconnexion\" dans le header.\n- Consulter les détails d'un produit en cliquant sur le bouton \"Voir les détails\" sur chaque produit affiché sur la page d'accueil.\n- Ajouter un commentaire en cliquant sur le bouton \"Ajouter un commentaire\" sur la page des détails de chaque produit. Vous ne pouvez commenter qu'en étant connecté.\n- Consulter tous les commentaires sur la page des détails de chaque produit.\n- Ajouter un produit au panier en cliquant sur le bouton \"Ajouter au panier\" sur chaque produit affiché sur la page d'accueil.\n- Consulter le nombre de produits ajoutés au panier sur le header.\n- Consulter le contenu de votre panier en cliquant sur \"Mon panier\" sur le header.\n- Modifier la quantité de chaque produit dans le panier sur la page \"Mon panier\".\n- Supprimer un produit de votre panier sur la page \"Mon panier\".\n- Payer \"Mon panier\", les données de \"Mon panier\" payées seront enregistrées dans la base de données, après, le panier est vide. Vous ne pouvez payer qu'en étant connecté.\n\n\nSur mon site, en tant qu'administrateur, vous pouvez : \n- Se connecter avec le compte administrateur créé dans la base de données.\n- Se déconnecter en cliquant \"Logout\".\n- Consulter les statistiques sur le nombre de produits par catégorie en utilisant les tableaux et graphiques sur la page d'accueil.\n- Ajouter, Modifier, Supprimer, Voir les détails de chaque produit, Exporter la liste des produits au format csv.\n- Consulter les statistiques des revenus en utilisant les tableaux et graphiques sur la page \"Stats\" et filtrer par nom du produit, date de début, date de fin, an.\n",
+    "version": "1.0.0",
+    "title": "Bien-être & Santé au nature"
+  },
+  "servers": [
+        {
+        "url": "/"
+        }
+    ],
+  "components": {
+    "schemas": {
+           "Id":{
+                "type" : "integer",
+                "properties" : {
+                    "name" : {
+                        "type" : "integer"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "joined_date": {
+                        "type": "datetime"
+                    },
+                    "user_role": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                    "type": "string"
+                    }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "text"
+                    },
+                    "price": {
+                        "type": "float"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "created_date": {
+                        "type": "datetime"
+                    },
+                    "category_id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Receipt": {
+                "type": "object",
+                "properties": {
+                    "created_date": {
+                        "type": "datetime"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ReceiptDetails": {
+                "type": "object",
+                "properties": {
+                    "receipt_id": {
+                        "type": "integer"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "unit_price": {
+                        "type": "float"
+                    }
+                }
+            },
+            "Comment": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "created_date": {
+                        "type": "datetime"
+                    },
+                    "updated_date": {
+                        "type": "datetime"
+                    }
+                }
+            }
+        }
+    },
+"paths": {
+  "/": {
+      "get" :{
+          "tags": [
+              "Accueil"
+          ],
+          "summary": "La liste de tous les produits",
+          "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/components/schemas/Product"
+                }
+            },
+            "404": {
+                "description": "NOT FOUND",
+                "schema": {
+                    "$ref": "#/components/schemas/Product"
+                }
+            }
+          }
+      }
+  },
+  "/register": {
+      "get": {
+          "tags": [
+              "Inscription"
+          ],
+          "summary": "S'inscrire",
+          "description": "Récupère les informations d'enregistrement",
+          "responses": {
+              "200": {
+                  "description": "Informations d'enregistrement récupérées avec succès",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+              }
+          }
+      },
+      "post": {
+          "tags": [
+              "Inscription"
+          ],
+          "summary": "S'inscrire",
+          "description": "Enregistre un nouvel utilisateur",
+          "parameters": [
+              {
+                  "name": "name",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "username",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "password",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "email",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "confirm",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "avatar_path",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              }
+          ],
+          "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                    }
+                }
+            },
+          "responses": {
+              "201": {
+                  "description": "Utilisateur enregistré avec succès",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+              }
+          }
+      }
+  },
+  "/user-login": {
+      "post": {
+          "tags": [
+              "Connexion"
+          ],
+          "summary": "Se connecter",
+          "description": "Authentifie un utilisateur",
+          "parameters": [
+              {
+                  "name": "username",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              },
+              {
+                  "name": "password",
+                  "in": "formData",
+                  "type": "string",
+                  "required": true
+              }
+          ],
+          "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                    }
+                }
+            },
+          "responses": {
+              "200": {
+                  "description": "Authentification réussie",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+              },
+              "401": {
+                  "description": "Échec de l'authentification",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+              }
+          }
+      },
+      "get": {
+          "tags": [
+              "Connexion"
+          ],
+          "summary": "Se connecter",
+          "description": "Vérifie l'authentification d'un utilisateur",
+          "responses": {
+              "200": {
+                  "description": "Utilisateur authentifié",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+              },
+              "401": {
+                  "description": "Utilisateur non authentifié",
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+              }
+          }
+      }
+  },
+  "/user-logout": {
+      "get" :{
+          "tags": [
+              "Déconnexion de l'utilisateur"
+          ],
+          "summary": "Se déconnecter en tant que utilisateur",
+          "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+            },
+            "404": {
+                "description": "NOT FOUND",
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+            }
+          }
+      }
+  },
+  "/products/{id}": {
+      "get" :{
+          "tags": [
+              "Détails du produit"
+          ],
+          "summary": "Afficher les détails du produit",
+          "parameters": [{
+            "name": "id",
+            "in": "path",
+            "description": "ID du produit",
+            "type": "integer",
+            "schema" : {
+                "$ref": "#/components/schemas/Id"
+            }
+          }],
+
+          "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/components/schemas/Product"
+                }
+            },
+            "404": {
+                "description": "NOT FOUND",
+                "schema": {
+                    "$ref": "#/components/schemas/Product"
+                }
+            }
+          }
+      }
+  },
+  "/api/comments": {
+    "post": {
+      "tags": [
+            "Ajout d'un commentaire d'un produit"
+        ],
+        "summary": "Ajouter un commentaire",
+        "description": "Ajouter un nouveau commentaire en fournissant le contenu et le product_id",
+        "parameters": [
+            {
+                "name": "content",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "product_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        ],
+        "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/Comment"
+                    }
+                }
+            },
+        "responses": {
+            "201": {
+                "description": "Commentaire ajouté",
+                "schema": {
+                    "$ref": "#/components/schemas/Comment"
+                }
+            },
+            "400": {
+                "description": "Invalid request",
+                "schema": {
+                    "$ref": "#/components/schemas/Comment"
+                }
+            },
+            "404": {
+                "description": "Error",
+                "schema": {
+                    "$ref": "#/components/schemas/Comment"
+                }
+            }
+        }
+    }
+  },
+  "/api/add-cart": {
+      "post": {
+          "tags": [
+              "Ajout d'un produit au panier"
+          ],
+          "summary": "Ajouter un produit au panier",
+          "description": "Ajoute un produit au panier",
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "schema": {
+                      "type": "number"
+                  },
+                  "required": true
+              },
+              {
+                  "name": "name",
+                  "in": "path",
+                  "schema": {
+                      "type": "string"
+                  },
+                  "required": true
+              },
+              {
+                  "name": "price",
+                  "in": "path",
+                  "schema": {
+                      "type": "number"
+                  },
+                  "required": true
+              }
+          ],
+          "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                    }
+                }
+            },
+          "responses": {
+              "200": {
+                  "description": "Ajout à la panier réussi",
+                  "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                  }
+              },
+              "400": {
+                  "description": "Données de l'élément manquantes",
+                  "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                  }
+              },
+              "404": {
+                  "description": "L'élément n'a pas été trouvé",
+                  "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                  }
+              }
+          }
+      }
+  },
+  "/cart": {
+      "get" :{
+          "tags": [
+              "Mon panier"
+          ],
+          "summary": "Tous les produits ajoutés dans le panier",
+
+          "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                }
+            },
+            "404": {
+                "description": "NOT FOUND",
+                "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                }
+            }
+          }
+      }
+  },
+  "/api/update-cart": {
+    "put": {
+      "tags": [
+              "Mise à jour de la quantité d'un produit"
+          ],
+      "summary": "Mettre à jour de la quantité d'un produit dans le panier",
+      "parameters": [
+          {
+              "name": "id",
+              "in": "path",
+              "description": "ID du produit à mettre à jour",
+              "required": true,
+              "type": "string"
+          },
+          {
+              "name": "quantity",
+              "in": "path",
+              "description": "Nouvelle quantité pour le produit",
+              "required": true,
+              "type": "integer"
+          }
+      ],
+      "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+                    }
+                }
+          },
+      "responses": {
+          "200": {
+              "description": "La mise à jour a réussi",
+              "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+              }
+          },
+          "404": {
+              "description": "Le produit n'a pas été trouvé dans le panier",
+              "schema": {
+                    "$ref": "#/components/schemas/ReceiptDetails"
+              }
+          }
+      }
+            }
+        },
+  "/api/delete-cart/{id}": {
+    "delete": {
+      "tags": [
+          "Suppression du quantité du produit dans le panier"
+      ],
+      "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "integer",
+          "schema" : {
+              "$ref": "#/components/schemas/Id"
+          }
+      }],
+      "summary": "Effacer le quantité du produit dans le panier",
+      "responses": {
+          "200": {
+              "description": "OK",
+              "schema": {
+                  "$ref": "#/components/schemas/Product"
+              }
+          },
+          "404": {
+              "description": "NOT FOUND",
+              "schema": {
+                  "$ref": "#/components/schemas/Product"
+              }
+      }
+      }
+  }
+  },
+  "/api/pay": {
+      "post" :{
+          "tags": [
+              "Paiement"
+          ],
+          "summary": "Payer",
+          "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/Receipt"
+                    }
+                }
+          },
+          "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/components/schemas/Receipt"
+                }
+            },
+            "404": {
+                "description": "NOT FOUND",
+                "schema": {
+                    "$ref": "#/components/schemas/Receipt"
+                  }
+            }
+          }
+      }
+  }
+
+}
+}

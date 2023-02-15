@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+ <head>
+   <meta charset="UTF-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Connexion</title>
+   <link rel="shortcut icon" href="{{ url_for('static', filename='images/sante_logo.jpeg') }}"/>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+
+ </head>
+ <body>
+   <div class="container">
+     <h1>Connexion</h1>
+     <form method="post">
+       <div class="form-control">
+         <label for="username" class="sr-only">Identifiant
+           <span style="color: red;">*</span>
+         </label>
+         <input type="text" id="username" name="username" placeholder="Identifiant" required autofocus />
+         <small></small>
+       </div>
+       <div class="form-control">
+         <label for="password" class="sr-only">Mot de passe
+           <span style="color: red;">*</span>
+         </label>
+         <input type="password" id="password" name="password" placeholder="Mot de passe" required />
+         <small></small>
+       </div>
+       <input type="submit" value="Se connecter" />
+     </form>
+     <form>
+       <button style="background-color: grey;"><a href="{{ url_for('home') }}" style="text-decoration: none; color: white;">Retourner à la page d'accueil</a></button>
+       <div class="signup_link"></div>
+     </form>
+   </div>
+ </body>
+</html>

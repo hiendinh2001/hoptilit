@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %} 
+
+{% block title %} Suivi en temps réel des patients aux Urgences {% endblock %}
+
+{% block content %}
+<h1 class="subject mt-5 mb-5">Suivi en temps réel des patients aux Urgences</h1>
+
+<div class="row justify-content-center mb-5">
+  <div class="col-md-6 col-xs-12">
+    <table class="table table-bordered">
+      <tr>
+        <th class="text-center">Code de statut</th>
+        <th class="text-center">Statut</th>
+        <th class="text-center">Nombre du patient</th>
+      </tr>
+      {% for s in status %}
+      <tr>
+        <td class="text-center">{{ s[0] }}</td>
+        <td class="text-center">{{ s[1] }}</td>
+        <td class="text-center">{{ s[2] }}
+            <p><a class="btn btn-info mt-2" href="{{ url_for('patient', status_id=s.id) }}" role="button">Voir détails &raquo;</a></p>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </table>
+  </div>
+
+</div>
+{% endblock %}

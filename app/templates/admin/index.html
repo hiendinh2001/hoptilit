@@ -1,0 +1,125 @@
+{% extends 'admin/base.html' %} 
+
+{% block body %}
+{% if current_user.is_authenticated %}
+<h1 class="subject mb-5">Bienvenue <span class="text-info"> {{ current_user.name }}</span> sur le site de l'administration</h1>
+
+<!--<div class="row">
+  <div class="col-md-6 col-xs-12">
+    <table class="table">
+      <tr>
+        <th>Code de catégorie</th>
+        <th>Nom de categorie</th>
+        <th>Nombre du produit</th>
+      </tr>
+      {% for s in stats %}
+      <tr>
+        <td class="text-center">{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td class="text-center">{{ s[2] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="col-md-6 col-xs-12">
+    <canvas id="myCategoryChart">
+
+    </canvas>
+  </div>
+
+</div>-->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let labels = []
+  let data = []
+  let colors = []
+  let borderColors = []
+  let r, g, b;
+
+  {% for s in stats %}
+    labels.push('{{ s[1] }}')
+    data.push({{ s[2] }})
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`)
+  {% endfor %}
+
+  window.onload = function() {
+    const ctx = document.getElementById('myCategoryChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Statistiques des produits par catégorie',
+              data: data,
+              backgroundColor: colors,
+              borderColor: borderColors,
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+  }
+</script>
+
+{% else %}
+<div class="text-center">
+    <form class="form-signin" method="post" action="{{ url_for('signin_admin') }}"> 
+      <img class="mb-4" src="{{ url_for('static', filename='images/sante_logo.jpeg') }}" alt="Logo" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Connexion pour l'admistrateur</h1>
+      <div class="form-group">
+        <label for="username" class="sr-only">Identifiant</label> 
+        <input type="text" id="username" name="username" class="form-control" placeholder="Identifiant" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Mot de passe</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+      <p class="mt-5 mb-3 text-muted"></p>
+    </form>
+</div>
+{% endif %}
+
+<style>
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+}
+</style>
+{% endblock %}
+

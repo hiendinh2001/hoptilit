@@ -1,0 +1,68 @@
+{% extends 'layout/base.html' %} 
+
+{% block title %} Accueil {% endblock %}
+
+{% block content %}
+<main role="main">
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Hoptilit</h1>
+          <p>Plus de temps pour soigner, moins de temps pour gérer, avec notre application de logistique hospitalière</p>
+          {% if not current_user.is_authenticated %}
+          <p><a class="btn btn-primary btn-lg" href="{{ url_for('user_signin') }}" role="button">Découvrir &raquo;</a></p>
+          {% endif %}
+        </div>
+      </div>
+
+      <br/>
+
+        <div class="row bg-white ml-5 mr-5">
+          <div class="col-md-1 mb-4 text-center">
+            <i class="fa-regular fa-calendar fa-2x mt-2"></i>
+          </div>
+            <div class="col-md-5 mb-4">
+            <h2>Suivi en temps réel des patients</h2>
+            <p>Affiche le nombre de patients en attente, admis et sortis d'un service pour une vue d'ensemble en temps réel.</p>
+              {% if current_user.is_authenticated %}
+            <p><a class="btn btn-secondary" href="{{ url_for('status') }}" role="button">Voir détails &raquo;</a></p>
+              {% endif %}
+          </div>
+          <div class="col-md-1 mb-4 text-center">
+            <i class="fa-regular fa-folder fa-2x mt-2"></i>
+          </div>
+          <div class="col-md-5 mb-4">
+            <h2>Prédiction de la disponibilité des lits</h2>
+            <p>Utilise un modèle prédictif pour anticiper la disponibilité des lits et des chambres pour faciliter la planification.</p>
+            {% if current_user.is_authenticated %}
+            <p><a class="btn btn-secondary" href="#" role="button">Voir détails &raquo;</a></p>
+            {% endif %}
+          </div>
+          <div class="col-md-1 mb-4 text-center">
+            <i class="fa-regular fa-bookmark fa-2x mt-2"></i>
+          </div>
+          <div class="col-md-5 mb-4">
+            <h2>Attribution automatique des chambres</h2>
+            <p>Automatise la distribution des chambres en fonction des besoins des patients et de la disponibilité des lits.</p>
+            {% if current_user.is_authenticated %}
+            <p><a class="btn btn-secondary" href="#" role="button">Voir détails &raquo;</a></p>
+            {% endif %}
+          </div>
+          <div class="col-md-1 mb-4 text-center">
+            <i class="fa-regular fa-user fa-2x mt-2"></i>
+          </div>
+          <div class="col-md-5 mb-4">
+            <h2>Gestion des informations du patient</h2>
+            <p>Stocke et gère les informations de base du patient pour faciliter l'accès à ces informations par le personnel soignant.</p>
+            {% if current_user.is_authenticated %}
+            <p><a class="btn btn-secondary" href="{{ url_for('patient') }}" role="button">Voir détails &raquo;</a></p>
+            {% endif %}
+          </div>
+        </div>
+
+        <br>
+
+
+    </main>
+
+
+{% endblock %}

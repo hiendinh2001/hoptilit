@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.jumbotron {
+  background-image: url(https://mobile-img.lpcdn.ca/lpca/924x/r3996/80c835f7896639509a87da9fca6df941.jpg);
+  background-size: cover;
+}
+
+h1.subject {
+    text-align: center;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+table.product {
+    border-collapse: collapse; 
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+/* Register */
+
+
+/* .footer {
+    border-top: 8px solid #88C6ED;
+} */
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+}

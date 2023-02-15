@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Logo -->
+  <a class="navbar-brand" href="#">
+    <img src="{{ url_for('static', filename='images/sante_logo.jpeg') }}" alt="Logo" style="width:40px;">
+  </a>
+
+  <!-- Bouton apparaît lorsque l'écran est réduit -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+      <!-- Page Accueil -->
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="/">Accueil</a>
+      </li>
+
+      <!-- Après la connexion -->
+      {% if current_user.is_authenticated %}
+      <!-- Page Suivi en temps réel des patients -->
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="{{ url_for('status') }}">Suivi en temps réel des patients</a> 
+      </li>
+
+      <!-- Page Liste des patients -->
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="{{ url_for('patient') }}">Liste des patients</a> 
+      </li>
+
+      <!-- Avatar + Nom Prénom -->
+      <li class="nav-item mr-3"> 
+        <a class="nav-link" href="{{ url_for('info_perso') }}">
+          {% if current_user.avatar %}
+            <img src="{{ current_user.avatar }}" class="rounded-circle" width="20" alt="{{ current_user.name }}"/>
+          {% else %}
+            <img src="{{ url_for('static', filename='images/avatar.png') }}" class="rounded-circle" width="30" alt="{{ current_user.name }}"/>
+          {% endif %}
+          {{ current_user.name }}
+        </a>
+      </li>
+
+      <!-- Bouton Déconnexion -->
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="{{ url_for('user_signout') }}">Déconnexion</a> 
+      </li>
+
+      <!-- Avant la connexion -->
+      {% else %}
+      <!-- Page Connexion -->
+      <li class="nav-item mr-3">
+        <a class="nav-link" href="{{ url_for('user_signin') }}">Connexion</a> 
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

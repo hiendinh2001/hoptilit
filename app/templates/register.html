@@ -1,0 +1,53 @@
+{% extends 'layout/base.html' %} 
+
+{% block title %} Inscription {% endblock %}
+
+{% block content %}
+
+{% if err_msg %}
+<div class="alter alter-danger text-center">
+  <h4 class="text-danger">{{ err_msg }}</h4> 
+</div>
+{% endif %}
+
+<div class="text-center">
+    <form class="form-signin" method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data"> 
+      <img class="mb-4" src="{{ url_for('static', filename='images/sante_logo.jpeg') }}" alt="Logo" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
+      <div class="form-group">
+        <label for="name" class="sr-only">Nom et Prénom</label> 
+        <input type="text" id="name" name="name" class="form-control" placeholder="Nom et Prénom" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="email" class="sr-only">Email</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email" autofocus>
+      </div>
+      <div class="form-group">
+        <label for="username" class="sr-only">Identifiant</label> 
+        <input type="text" id="username" name="username" class="form-control" placeholder="Identifiant" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Mot de passe</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm" class="sr-only">Confirmation du mot de passe</label>
+        <input type="password" id="confirm" name="confirm" class="form-control" placeholder="Confirmation du mot de passe" required>
+      </div>
+      <div class="form-group">
+        <label for="avatar" class="sr-only">Avatar</label>
+        <input type="file" id="avatar" name="avatar" class="form-control" placeholder="Confirmation du mot de passe" required>
+      </div>
+      <div class="form-group">
+        <label for="fonction" class="sr-only">Fonction</label>
+        <input type="text" id="fonction" name="fonction" class="form-control" placeholder="Fonction" autofocus>
+      </div>
+      <div class="form-group">
+        <label for="service" class="sr-only">Service</label>
+        <input type="text" id="service" name="service" class="form-control" placeholder="Service" autofocus>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">S'inscrire</button>
+      <p class="mt-5 mb-3 text-muted"></p>
+    </form>
+</div>
+{% endblock %}
