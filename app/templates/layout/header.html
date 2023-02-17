@@ -34,7 +34,7 @@
           {% if current_user.avatar %}
             <img src="{{ current_user.avatar }}" class="rounded-circle" width="20" alt="{{ current_user.name }}"/>
           {% else %}
-            <img src="{{ url_for('static', filename='images/avatar.png') }}" class="rounded-circle" width="30" alt="{{ current_user.name }}"/>
+            <img src="{{ url_for('static', filename='images/avatar.png') }}" class="rounded-circle" width="20" alt="{{ current_user.name }}"/>
           {% endif %}
           {{ current_user.name }}
         </a>
